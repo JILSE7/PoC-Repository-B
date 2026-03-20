@@ -60,6 +60,32 @@ git commit -m "Pulled the latest changes from PoC-Repository-A" // it commits th
 git push // it pushes the submodule pointer in PoC Repository B
 
 
+## Unlinking the submodule from Repository B
+Step 1: Unregister the Submodule
+This step removes the submodule's configuration from your local .git/config file so Git stops tracking it.
+
+bash
+git submodule deinit -f -- poc-submodule // it unregisters the submodule in PoC Repository B
+
+Step 2: Delete the Folder and Remove from Git Cache
+This deletes the physical repo-a-links folder from your workspace and deletes the reference in the .gitmodules file.
+
+bash
+git rm -f poc-submodule // it removes the submodule folder from PoC Repository B
+
+Step 3: Delete the Hidden Git Data
+Even after removing the folder, Git keeps the downloaded files cached deep inside your hidden .git folder (just in case you want to add it back later). It is highly recommended to delete this, otherwise, if you try to add a submodule with the exact same name later, Git will throw an error.
+
+bash
+rm -rf .git/modules/poc-submodule // it removes the hidden git data of the submodule in PoC Repository B
+
+Step 4: Commit the Removal
+Finally, commit these changes so Repository B remembers that the submodule is gone forever.
+
+bash
+git commit -m "Completely removed the poc-submodule" // it commits the removal of the submodule in PoC Repository B
+git push // it pushes the removal of the submodule in PoC Repository B
+
 
 
 
