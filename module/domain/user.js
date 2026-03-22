@@ -5,3 +5,6 @@ export class User {
     this.email = email;
   }
 }
+
+
+User.apply(t => t.id)
