@@ -1,0 +1,53 @@
+name: Sync folders to PoC-Repository-A
+ 
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "docs/**"
+      - "domain/**"
+ 
+jobs:
+  sync-docs:
+    name: Sync /docs → module/docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PoC-Repository-B (monorepo)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+ 
+      - name: Push /docs to PoC-Repository-A/module/docs
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.SYNC_TOKEN }}
+        with:
+          source-directory: "docs"
+          destination-github-username: "JILSE7"
+          destination-repository-name: "PoC-Repository-A"
+          destination-directory: "module/docs"
+          target-branch: master
+          commit-message: "sync(docs): ${{ github.event.head_commit.message }}"
+ 
+  sync-domain:
+    name: Sync /domain → module/domain
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PoC-Repository-B (monorepo)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+ 
+      - name: Push /domain to PoC-Repository-A/module/domain
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.SYNC_TOKEN }}
+        with:
+          source-directory: "domain"
+          destination-github-username: "JILSE7"
+          destination-repository-name: "PoC-Repository-A"
+          destination-directory: "module/domain"
+          target-branch: master
+          commit-message: "sync(domain): ${{ github.event.head_commit.message }}"
+ 
